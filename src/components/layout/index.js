@@ -1,6 +1,6 @@
 import React from 'react';
 
-function layout({ children }){
+const layout = ({ children }) =>{
     return (
         <section>
             <header>header</header>
