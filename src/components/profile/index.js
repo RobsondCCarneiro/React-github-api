@@ -12,7 +12,9 @@ const Profile = () => {
                 <h1>Robson da Costa</h1>
                 <S.WrapperUsername>
                     <h3>Username: </h3>
-                    <span>RobsondCCarneiro</span>
+                    <a href="https://github.com/RobsondCCarneiro" 
+                    target="_blank"
+                    rel="noreferrer">RobsondCCarneiro</a>
                 </S.WrapperUsername>
             </div>
             <S.WrapperStatusCount>
