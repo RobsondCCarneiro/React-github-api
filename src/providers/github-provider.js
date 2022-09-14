@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback } from 'react'
-import api from '../providers/github-provider'
+import api from '../services/api'
 
 export const GithubContext = createContext({
     loading: false,
@@ -10,8 +10,10 @@ export const GithubContext = createContext({
 
 const GithubProvider = ({ children }) => {
     const [githubState, setGithubState] = useState({
+        hasUser: false,
         loading: false,
         user: {
+            avatar: undefined,
             login: undefined,
             name: undefined,
             htmlUrl: undefined,
@@ -28,23 +30,30 @@ const GithubProvider = ({ children }) => {
     });
 
     const getUser = (username) => {
-        api.get(`users/${username}`).then(({ data: { user } }) => {
+        api.get(`users/${username}`).then(({ data }) => {
             setGithubState((prevState) => ({
                 ...prevState,
+                hasUser: true,
                 user: {
-                    login: user.data,
-                    name: user.name,
-                    htmlUrl: user.htmlUrl,
-                    blog: user.blog,
-                    company: user.company,
-                    location: user.location,
-                    followers: user.followers,
-                    following: user.following,
-                    public_gists: user.public_gists,
-                    public_repos: user.public_repos,
+                    avatar: data.avatar_url,
+                    login: data.login,
+                    name: data.name,
+                    htmlUrl: data.htmlUrl,
+                    blog: data.blog,
+                    company: data.company,
+                    location: data.location,
+                    followers: data.followers,
+                    following: data.following,
+                    public_gists: data.public_gists,
+                    public_repos: data.public_repos,
                 },
             }));
-        });
+        }).finally(() =>
+            setGithubState((prevState) => ({
+                ...prevState,
+                loading: !prevState.loading
+            }))
+        )
     };
 
     const contextValue = {
